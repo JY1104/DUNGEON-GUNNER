@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dungeon Gunner (FYP Final)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui-mobile-controls" class="hidden">
+            <div id="joystick-base">
+                <div id="joystick-knob"></div>
+            </div>
+            <button id="shoot-btn">FIRE</button>
+        </div>
+
+        <div id="ui-main-menu" class="ui-layer active">
+            <h1 class="game-title">DUNGEON GUNNER</h1>
+            <div class="menu-buttons">
+                <button id="btn-start" class="pixel-btn">START GAME</button>
+                <button id="btn-settings" class="pixel-btn text-gray">SETTINGS</button>
+                <button id="btn-records" class="pixel-btn text-gray">RECORDS</button>
+            </div>
+        </div>
+
+        <div id="ui-settings" class="ui-layer hidden">
+            <div class="panel-box">
+                <h2 class="menu-title">SETTINGS</h2>
+                <div class="setting-item">
+                    <label>BGM VOLUME: <span id="bgm-val">5</span></label>
+                    <input type="range" id="slider-bgm" min="0" max="10" value="5"> 
+                </div>
+                <div class="setting-item">
+                    <label>SFX VOLUME: <span id="sfx-val">5</span></label>
+                    <input type="range" id="slider-sfx" min="0" max="10" value="5">
+                </div>
+                <div class="setting-item">
+                    <button id="btn-mute" class="pixel-btn small-btn text-red">MUTE ALL</button>
+                </div>
+                <button id="btn-settings-back" class="pixel-btn mt-40">BACK</button>
+            </div>
+        </div>
+
+        <div id="ui-shop" class="ui-layer hidden">
+            <div class="panel-box shop-panel">
+                <h2 class="menu-title text-yellow">BLACK MARKET</h2>
+                <div class="wallet-info">COINS: <span id="shop-wallet" class="text-yellow">0</span></div>
+                
+                <div class="shop-items-grid">
+                    <div class="shop-item">
+                        <div class="item-icon dmg-icon"></div> <div class="item-info">
+                            <h3>DAMAGE UP</h3>
+                            <p>LV: <span id="lvl-dmg">1</span></p>
+                        </div>
+                        <button id="btn-buy-dmg" class="pixel-btn buy-btn">50 RM</button>
+                    </div>
+
+                    <div class="shop-item">
+                        <div class="item-icon hp-icon"></div>
+                        <div class="item-info">
+                            <h3>MAX HP</h3>
+                            <p>LV: <span id="lvl-hp">1</span></p>
+                        </div>
+                        <button id="btn-buy-hp" class="pixel-btn buy-btn">50 RM</button>
+                    </div>
+
+                </div>
+                <button id="btn-shop-back" class="pixel-btn mt-40">EXIT SHOP</button>
+            </div>
+        </div>
+
+        <div id="ui-records" class="ui-layer hidden">
+            <div class="panel-box">
+                <h2 class="menu-title">HIGH SCORES</h2>
+                <ul id="records-list" class="records-list">
+                    <li>NO DATA YET</li>
+                </ul>
+                <button id="btn-records-back" class="pixel-btn mt-40">BACK</button>
+            </div>
+        </div>
+
+        <div id="ui-pause" class="ui-layer hidden">
+            <div class="panel-box">
+                <h2 class="menu-title">PAUSED</h2>
+                <div class="menu-buttons">
+                    <button id="btn-resume" class="pixel-btn">RESUME</button>
+                    <button id="btn-pause-settings" class="pixel-btn text-gray">SETTINGS</button>
+                    <button id="btn-pause-main" class="pixel-btn text-red">MAIN MENU</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="ui-mobile-controls" class="hidden">
+            <div id="joystick-base"><div id="joystick-knob"></div></div>
+            <div id="shoot-btn"><span>🎯</span></div>
+        </div>
+
+    </div>
+</body>
+<script type="module" src="./src/main.js"></script>
+</html>
