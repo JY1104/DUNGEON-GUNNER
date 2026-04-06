@@ -1,0 +1,151 @@
+* {
+    margin: 0; padding: 0; box-sizing: border-box;
+    user-select: none; -webkit-user-select: none;
+}
+
+body {
+    background-color: #000; overflow: hidden;
+    font-family: 'Courier New', Courier, monospace; 
+}
+
+#game-container { position: relative; width: 100vw; height: 100vh; }
+canvas { display: block; width: 100%; height: 100%; }
+
+/* --- 通用 UI 图层 (包含背景图占位) --- */
+.ui-layer {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    /* 这里的 url 你可以换成自己的菜单背景图，比如 background-image: url('assets/menu_bg.jpg') */
+    background: rgba(10, 15, 20, 0.9); 
+    background-size: cover;
+    background-position: center;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    z-index: 10;
+    transition: opacity 0.3s ease;
+}
+
+.hidden { display: none !important; }
+
+/* 居中的面板 (Settings, Shop, Records 共用) */
+.panel-box {
+    background: rgba(0, 0, 0, 0.85);
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 40px 60px;
+    box-shadow: 0 0 30px rgba(0, 255, 204, 0.1);
+    display: flex; flex-direction: column; align-items: center;
+}
+
+/* --- 文字与颜色 --- */
+.game-title {
+    color: #00ffcc; font-size: 5rem; font-weight: 900;
+    margin-bottom: 60px; text-shadow: 0 0 20px #00ffcc, 0 5px 0 #008866;
+    letter-spacing: 5px;
+}
+
+.menu-title { color: #fff; font-size: 3rem; margin-bottom: 40px; text-shadow: 0 2px 5px #000; }
+.text-yellow { color: #ffcc00 !important; }
+.text-gray { color: #aaaaaa !important; }
+.text-red { color: #ff4444 !important; }
+
+/* --- 按钮样式 --- */
+.menu-buttons { display: flex; flex-direction: column; gap: 20px; width: 300px; }
+
+.pixel-btn {
+    background-color: #1a1a1a; color: #fff; border: 2px solid #00ffcc;
+    padding: 15px 20px; font-size: 1.5rem; font-family: inherit; font-weight: bold;
+    cursor: pointer; transition: all 0.15s ease; width: 100%; text-align: center;
+    text-transform: uppercase;
+}
+.pixel-btn:hover { background-color: #00ffcc; color: #000; box-shadow: 0 0 20px #00ffcc; transform: scale(1.05); }
+.pixel-btn:active { transform: scale(0.95); }
+.small-btn { padding: 10px 15px; font-size: 1.2rem; }
+
+/* --- 设置菜单间距重设 --- */
+.setting-item {
+    display: flex; flex-direction: column; align-items: center; gap: 15px; 
+    margin-bottom: 35px; width: 100%; color: #fff; font-size: 1.5rem;
+}
+/* 美化原生滑块 */
+input[type=range] { width: 250px; cursor: pointer; accent-color: #00ffcc; }
+
+/* --- 商店排版 (任务 7: HTML 重新设计) --- */
+.shop-panel { width: 800px; max-width: 90%; }
+.wallet-info { font-size: 1.8rem; margin-bottom: 30px; font-weight: bold; }
+.shop-items-grid {
+    display: flex; justify-content: space-between; gap: 20px; width: 100%;
+}
+.shop-item {
+    background: #111; border: 1px solid #444; padding: 20px; border-radius: 8px;
+    display: flex; flex-direction: column; align-items: center; gap: 15px; flex: 1;
+}
+/* 图标占位符 (任务 8) */
+.item-icon { width: 80px; height: 80px; background: #333; border-radius: 10px; }
+.dmg-icon { border-bottom: 4px solid #ff4444; }
+.hp-icon { border-bottom: 4px solid #44ff44; }
+.fire-icon { border-bottom: 4px solid #ffcc00; }
+
+.item-info h3 { color: #fff; font-size: 1.2rem; }
+.item-info p { color: #aaa; font-size: 1rem; text-align: center; margin-top: 5px; }
+.buy-btn { font-size: 1.2rem; padding: 10px; border-color: #ffcc00; }
+.buy-btn:hover { background-color: #ffcc00; box-shadow: 0 0 15px #ffcc00; }
+
+/* 历史记录 */
+.records-list {
+    list-style: none; color: #fff; font-size: 1.5rem; line-height: 2;
+    width: 300px; text-align: center; margin-bottom: 20px;
+}
+.mt-40 { margin-top: 40px; }
+
+/* ==========================================
+   📱 手机端控制 UI 样式
+========================================== */
+#ui-mobile-controls {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; /* 让这一层不会挡住屏幕中央的点击 */
+    z-index: 50;
+    touch-action: none; /* 🚫 极度重要：屏蔽手机浏览器的下拉刷新和滑动 */
+}
+
+/* 摇杆底座 (左下角) */
+#joystick-base {
+    position: absolute;
+    bottom: 40px; left: 40px;
+    width: 120px; height: 120px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    pointer-events: auto; /* 允许触摸 */
+}
+
+/* 摇杆头部 (中间的小圆) */
+#joystick-knob {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 50px; height: 50px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none; /* 把触摸事件全交给底座处理 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+/* 射击按钮 (右下角) */
+#shoot-btn {
+    position: absolute;
+    bottom: 50px; right: 50px;
+    width: 90px; height: 90px;
+    background: rgba(255, 50, 50, 0.5);
+    color: white; 
+    font-size: 18px; font-weight: bold;
+    border: 3px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    pointer-events: auto;
+    user-select: none; /* 防止文字被选中 */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+}
+
+#shoot-btn:active {
+    background: rgba(255, 50, 50, 0.8);
+    transform: scale(0.95); /* 按下时稍微缩小，增加手感 */
+}
